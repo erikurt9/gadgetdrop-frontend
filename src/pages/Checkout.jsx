@@ -37,7 +37,7 @@ export default function Checkout() {
     setLoading(true)
     setError(null)
     try {
-      const response = await fetch("/api/process-payment", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || ""}/api/process-payment`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
