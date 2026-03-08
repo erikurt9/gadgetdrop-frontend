@@ -1,3 +1,4 @@
+import { clp } from "../utils/format"
 import { useState, useEffect, useRef } from "react"
 import { useNavigate } from "react-router-dom"
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
@@ -195,8 +196,8 @@ function ProductCard({ product, index }) {
           <p style={{ color: "#6b7280", fontSize: 13, lineHeight: 1.6, marginBottom: 16, flex: 1 }}>{product.shortDesc}</p>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, paddingTop: 12, borderTop: "1px solid #f5f5f5", flexWrap: "wrap" }}>
             <div>
-              <span style={{ fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 22 }}>${product.price}</span>
-              <span style={{ color: "#d1d5db", textDecoration: "line-through", fontSize: 13, marginLeft: 8 }}>${product.oldPrice}</span>
+              <span style={{ fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 22 }}>{clp(product.price)}</span>
+              <span style={{ color: "#d1d5db", textDecoration: "line-through", fontSize: 13, marginLeft: 8 }}>{clp(product.oldPrice)}</span>
             </div>
             <motion.button onClick={handleAdd} whileTap={{ scale: 0.92 }} whileHover={{ scale: 1.06 }}
               animate={{ background: added ? "#22c55e" : inCart ? "#166534" : "#000" }}
@@ -219,7 +220,7 @@ function CartDrawer({ onClose }) {
   const { cart, removeFromCart, cartTotal } = useCart()
   const totalOld = cart.reduce((s, i) => s + i.oldPrice * i.qty, 0)
   const saved = totalOld - cartTotal
-  const freeShippingLeft = Math.max(0, 50 - cartTotal)
+  const freeShippingLeft = Math.max(0, 50000 - cartTotal)
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
@@ -238,7 +239,7 @@ function CartDrawer({ onClose }) {
           <div style={{ padding: "12px 24px", background: "#f9fafb", borderBottom: "1px solid #f0f0f0" }}>
             {freeShippingLeft > 0 ? (
               <>
-                <p style={{ fontSize: 12, color: "#555", marginBottom: 8 }}>Te faltan <strong style={{ color: "#000" }}>${freeShippingLeft.toFixed(2)}</strong> para envío gratis 🚚</p>
+                <p style={{ fontSize: 12, color: "#555", marginBottom: 8 }}>Te faltan <strong style={{ color: "#000" }}>{clp(freeShippingLeft)}</strong> para envío gratis 🚚</p>
                 <div style={{ background: "#e5e7eb", borderRadius: 999, height: 6, overflow: "hidden" }}>
                   <motion.div initial={{ width: 0 }} animate={{ width: `${Math.min(100, (cartTotal / 50) * 100)}%` }}
                     transition={{ duration: 0.6, ease: "easeOut" }}
@@ -267,7 +268,7 @@ function CartDrawer({ onClose }) {
                   <p style={{ color: "#999", fontSize: 12, marginTop: 2 }}>Cantidad: {item.qty}</p>
                 </div>
                 <div style={{ textAlign: "right", flexShrink: 0 }}>
-                  <p style={{ fontWeight: 800, fontSize: 14 }}>${(item.price * item.qty).toFixed(2)}</p>
+                  <p style={{ fontWeight: 800, fontSize: 14 }}>{clp(item.price * item.qty)}</p>
                   <motion.button whileHover={{ color: "#dc2626" }} onClick={() => removeFromCart(item.id)}
                     style={{ background: "none", border: "none", color: "#f87171", fontSize: 12, cursor: "pointer", marginTop: 2 }}>Quitar</motion.button>
                 </div>
@@ -280,12 +281,12 @@ function CartDrawer({ onClose }) {
             {saved > 0 && (
               <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }}
                 style={{ background: "#f0fdf4", border: "1px solid #bbf7d0", borderRadius: 12, padding: "10px 16px", textAlign: "center" }}>
-                <p style={{ color: "#16a34a", fontSize: 13, fontWeight: 600 }}>🎉 Estás ahorrando <strong>${saved.toFixed(2)}</strong></p>
+                <p style={{ color: "#16a34a", fontSize: 13, fontWeight: 600 }}>🎉 Estás ahorrando <strong>{clp(saved)}</strong></p>
               </motion.div>
             )}
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <span style={{ color: "#666", fontWeight: 500 }}>Total</span>
-              <span style={{ fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 28 }}>${cartTotal.toFixed(2)}</span>
+              <span style={{ fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 28 }}>{clp(cartTotal)}</span>
             </div>
             <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
               onClick={() => { onClose(); navigate("/checkout") }}

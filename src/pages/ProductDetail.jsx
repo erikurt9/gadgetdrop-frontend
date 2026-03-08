@@ -1,3 +1,4 @@
+import { clp } from "../utils/format"
 import { useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { motion, AnimatePresence } from "framer-motion"
@@ -13,7 +14,7 @@ function CartDrawer({ onClose }) {
   const { cart, removeFromCart, cartTotal } = useCart()
   const totalOld = cart.reduce((s, i) => s + i.oldPrice * i.qty, 0)
   const saved = totalOld - cartTotal
-  const freeShippingLeft = Math.max(0, 50 - cartTotal)
+  const freeShippingLeft = Math.max(0, 50000 - cartTotal)
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
@@ -32,7 +33,7 @@ function CartDrawer({ onClose }) {
           <div style={{ padding: "12px 24px", background: "#f9fafb", borderBottom: "1px solid #f0f0f0" }}>
             {freeShippingLeft > 0 ? (
               <>
-                <p style={{ fontSize: 12, color: "#555", marginBottom: 8 }}>Te faltan <strong style={{ color: "#000" }}>${freeShippingLeft.toFixed(2)}</strong> para envío gratis 🚚</p>
+                <p style={{ fontSize: 12, color: "#555", marginBottom: 8 }}>Te faltan <strong style={{ color: "#000" }}>{clp(freeShippingLeft)}</strong> para envío gratis 🚚</p>
                 <div style={{ background: "#e5e7eb", borderRadius: 999, height: 6, overflow: "hidden" }}>
                   <motion.div initial={{ width: 0 }} animate={{ width: `${Math.min(100, (cartTotal / 50) * 100)}%` }}
                     transition={{ duration: 0.6, ease: "easeOut" }}
@@ -60,7 +61,7 @@ function CartDrawer({ onClose }) {
                   <p style={{ color: "#999", fontSize: 12, marginTop: 2 }}>Cantidad: {item.qty}</p>
                 </div>
                 <div style={{ textAlign: "right", flexShrink: 0 }}>
-                  <p style={{ fontWeight: 800, fontSize: 14 }}>${(item.price * item.qty).toFixed(2)}</p>
+                  <p style={{ fontWeight: 800, fontSize: 14 }}>{clp(item.price * item.qty)}</p>
                   <motion.button whileHover={{ color: "#dc2626" }} onClick={() => removeFromCart(item.id)}
                     style={{ background: "none", border: "none", color: "#f87171", fontSize: 12, cursor: "pointer", marginTop: 2 }}>Quitar</motion.button>
                 </div>
@@ -72,12 +73,12 @@ function CartDrawer({ onClose }) {
           <div style={{ padding: 24, borderTop: "1px solid #f0f0f0", display: "flex", flexDirection: "column", gap: 12 }}>
             {saved > 0 && (
               <div style={{ background: "#f0fdf4", border: "1px solid #bbf7d0", borderRadius: 12, padding: "10px 16px", textAlign: "center" }}>
-                <p style={{ color: "#16a34a", fontSize: 13, fontWeight: 600 }}>🎉 Estás ahorrando <strong>${saved.toFixed(2)}</strong></p>
+                <p style={{ color: "#16a34a", fontSize: 13, fontWeight: 600 }}>🎉 Estás ahorrando <strong>{clp(saved)}</strong></p>
               </div>
             )}
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <span style={{ color: "#666", fontWeight: 500 }}>Total</span>
-              <span style={{ fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 28 }}>${cartTotal.toFixed(2)}</span>
+              <span style={{ fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 28 }}>{clp(cartTotal)}</span>
             </div>
             <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
               onClick={() => { onClose(); navigate("/checkout") }}
@@ -214,11 +215,11 @@ export default function ProductDetail() {
             </h1>
 
             <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
-              <span style={{ fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 40 }}>${product.price}</span>
-              <span style={{ color: "#d1d5db", textDecoration: "line-through", fontSize: 20 }}>${product.oldPrice}</span>
+              <span style={{ fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 40 }}>{clp(product.price)}</span>
+              <span style={{ color: "#d1d5db", textDecoration: "line-through", fontSize: 20 }}>{clp(product.oldPrice)}</span>
               <motion.span animate={{ scale: [1, 1.03, 1] }} transition={{ duration: 2, repeat: Infinity }}
                 style={{ background: "#dcfce7", color: "#16a34a", fontSize: 13, fontWeight: 700, padding: "4px 10px", borderRadius: 20 }}>
-                Ahorras ${(product.oldPrice - product.price).toFixed(2)}
+                Ahorras {clp(product.oldPrice - product.price)}
               </motion.span>
             </div>
 
@@ -254,7 +255,7 @@ export default function ProductDetail() {
                 style={{ color: "#fff", border: "none", padding: "16px 32px", borderRadius: 16, fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 16, cursor: "pointer" }}>
                 <AnimatePresence mode="wait">
                   <motion.span key={added ? "added" : "add"} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.15 }}>
-                    {added ? `✓ ¡Agregado al carrito!` : `Agregar al carrito — $${(product.price * qty).toFixed(2)}`}
+                    {added ? `✓ ¡Agregado al carrito!` : `Agregar al carrito — ${clp(product.price * qty)}`}
                   </motion.span>
                 </AnimatePresence>
               </motion.button>
@@ -266,7 +267,7 @@ export default function ProductDetail() {
             </div>
 
             <div style={{ display: "flex", gap: 16, flexWrap: "wrap", paddingTop: 4 }}>
-              {[["🔒", "Pago seguro"], ["🚚", "Envío gratis +$50"], ["↩️", "30 días devolución"]].map(([icon, label]) => (
+              {[["🔒", "Pago seguro"], ["🚚", "Envío gratis +$50.000"], ["↩️", "30 días devolución"]].map(([icon, label]) => (
                 <div key={label} style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: "#6b7280" }}>
                   <span>{icon}</span><span>{label}</span>
                 </div>
@@ -376,8 +377,8 @@ export default function ProductDetail() {
                     <Stars n={Math.round(p.rating)} />
                     <p style={{ fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 15, lineHeight: 1.3, margin: "8px 0 4px" }}>{p.name}</p>
                     <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                      <span style={{ fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 20 }}>${p.price}</span>
-                      <span style={{ color: "#d1d5db", textDecoration: "line-through", fontSize: 13 }}>${p.oldPrice}</span>
+                      <span style={{ fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 20 }}>{clp(p.price)}</span>
+                      <span style={{ color: "#d1d5db", textDecoration: "line-through", fontSize: 13 }}>{clp(p.oldPrice)}</span>
                     </div>
                   </div>
                 </motion.div>

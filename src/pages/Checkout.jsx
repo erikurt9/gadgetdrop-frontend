@@ -1,3 +1,4 @@
+import { clp } from "../utils/format"
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { initMercadoPago, CardPayment } from "@mercadopago/sdk-react"
@@ -23,7 +24,7 @@ export default function Checkout() {
 
   const totalOld = cart.reduce((s, i) => s + i.oldPrice * i.qty, 0)
   const saved = totalOld - cartTotal
-  const shipping = cartTotal >= 50 ? 0 : 4990
+  const shipping = cartTotal >= 50000 ? 0 : 4990
   const total = Math.round(cartTotal + shipping) // CLP no acepta decimales
 
   useEffect(() => { if (cart.length === 0 && step !== 4) navigate("/") }, [cart])
@@ -132,8 +133,8 @@ export default function Checkout() {
                         <p style={{ fontSize: 13, color: "#9ca3af", marginTop: 4 }}>Cantidad: {item.qty}</p>
                       </div>
                       <div style={{ textAlign: "right" }}>
-                        <p style={{ fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 18 }}>${(item.price * item.qty).toFixed(2)}</p>
-                        <p style={{ color: "#d1d5db", textDecoration: "line-through", fontSize: 12 }}>${(item.oldPrice * item.qty).toFixed(2)}</p>
+                        <p style={{ fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 18 }}>{clp(item.price * item.qty)}</p>
+                        <p style={{ color: "#d1d5db", textDecoration: "line-through", fontSize: 12 }}>{clp(item.oldPrice * item.qty)}</p>
                         <button onClick={() => removeFromCart(item.id)} style={{ background: "none", border: "none", color: "#f87171", fontSize: 12, cursor: "pointer", marginTop: 4 }}>Quitar</button>
                       </div>
                     </div>
@@ -198,8 +199,8 @@ export default function Checkout() {
                     <label style={labelStyle}>Método de envío</label>
                     <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                       {[
-                        { id: "starken", name: "Starken", time: "2-4 días hábiles", price: cartTotal >= 50 ? "GRATIS" : "$4.990" },
-                        { id: "chilexpress", name: "Chilexpress", time: "3-5 días hábiles", price: cartTotal >= 50 ? "GRATIS" : "$5.990" },
+                        { id: "starken", name: "Starken", time: "2-4 días hábiles", price: cartTotal >= 50000 ? "GRATIS" : "$4.990" },
+                        { id: "chilexpress", name: "Chilexpress", time: "3-5 días hábiles", price: cartTotal >= 50000 ? "GRATIS" : "$5.990" },
                       ].map(op => (
                         <div key={op.id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", border: "2px solid #e5e7eb", borderRadius: 14, padding: "14px 18px", cursor: "pointer" }}
                           onClick={e => e.currentTarget.style.borderColor = "#000"}
@@ -291,12 +292,12 @@ export default function Checkout() {
                     {cart.map(item => (
                       <div key={item.id} style={{ display: "flex", justifyContent: "space-between", fontSize: 14, color: "#6b7280", marginBottom: 6 }}>
                         <span>{item.name} x{item.qty}</span>
-                        <span style={{ fontWeight: 600, color: "#000" }}>${(item.price * item.qty).toFixed(2)}</span>
+                        <span style={{ fontWeight: 600, color: "#000" }}>{clp(item.price * item.qty)}</span>
                       </div>
                     ))}
                     <div style={{ borderTop: "1px solid #e5e7eb", marginTop: 12, paddingTop: 12, display: "flex", justifyContent: "space-between" }}>
                       <span style={{ fontWeight: 800 }}>Total pagado</span>
-                      <span style={{ fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 18 }}>${total.toFixed(2)}</span>
+                      <span style={{ fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 18 }}>{clp(total)}</span>
                     </div>
                   </motion.div>
                   <motion.button
@@ -326,33 +327,33 @@ export default function Checkout() {
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <p style={{ fontWeight: 600, fontSize: 13, lineHeight: 1.3 }}>{item.name}</p>
                     </div>
-                    <span style={{ fontWeight: 700, fontSize: 14, flexShrink: 0 }}>${(item.price * item.qty).toFixed(2)}</span>
+                    <span style={{ fontWeight: 700, fontSize: 14, flexShrink: 0 }}>{clp(item.price * item.qty)}</span>
                   </div>
                 ))}
               </div>
               <div style={{ borderTop: "1px solid #f0f0f0", paddingTop: 16, display: "flex", flexDirection: "column", gap: 10 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", fontSize: 14, color: "#6b7280" }}>
                   <span>Subtotal</span>
-                  <span>${cartTotal.toFixed(2)}</span>
+                  <span>{clp(cartTotal)}</span>
                 </div>
                 {saved > 0 && (
                   <div style={{ display: "flex", justifyContent: "space-between", fontSize: 14, color: "#16a34a", fontWeight: 600 }}>
                     <span>Descuento</span>
-                    <span>-${saved.toFixed(2)}</span>
+                    <span>-{clp(saved)}</span>
                   </div>
                 )}
                 <div style={{ display: "flex", justifyContent: "space-between", fontSize: 14, color: "#6b7280" }}>
                   <span>Envío</span>
-                  <span style={{ color: shipping === 0 ? "#16a34a" : "#000", fontWeight: shipping === 0 ? 600 : 400 }}>{shipping === 0 ? "GRATIS 🎉" : `$${shipping.toFixed(2)}`}</span>
+                  <span style={{ color: shipping === 0 ? "#16a34a" : "#000", fontWeight: shipping === 0 ? 600 : 400 }}>{shipping === 0 ? "GRATIS 🎉" : `${clp(shipping)}`}</span>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", borderTop: "1px solid #f0f0f0", paddingTop: 12, marginTop: 4 }}>
                   <span style={{ fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 16 }}>Total</span>
-                  <span style={{ fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 20 }}>${total.toFixed(2)}</span>
+                  <span style={{ fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 20 }}>{clp(total)}</span>
                 </div>
               </div>
               {saved > 0 && (
                 <div style={{ background: "#f0fdf4", border: "1px solid #bbf7d0", borderRadius: 12, padding: "10px 14px", marginTop: 16, textAlign: "center" }}>
-                  <p style={{ color: "#16a34a", fontSize: 13, fontWeight: 600 }}>🎉 Estás ahorrando ${saved.toFixed(2)}</p>
+                  <p style={{ color: "#16a34a", fontSize: 13, fontWeight: 600 }}>🎉 Estás ahorrando {clp(saved)}</p>
                 </div>
               )}
               <div style={{ display: "flex", justifyContent: "center", gap: 16, marginTop: 20 }}>

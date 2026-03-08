@@ -4,8 +4,8 @@ export const PRODUCTS = [
     name: "Mini Impresora Térmica Bluetooth",
     shortDesc: "Imprime fotos, stickers y notas desde tu celular. Sin tinta, sin cables.",
     desc: "La Mini Impresora Térmica Bluetooth es el gadget perfecto para estudiantes creativos. Conecta vía Bluetooth con tu iPhone o Android y en segundos imprime fotos, stickers, listas o notas. No usa tinta — funciona con papel térmico especial incluido. Compacta, recargable por USB-C y con batería para más de 200 impresiones.",
-    price: 29.99,
-    oldPrice: 54.99,
+    price: 63000,
+    oldPrice: 94000,
     image: "/products/printer/1.jpeg",
     images: [
       "/products/printer/1.jpeg",
@@ -44,8 +44,8 @@ export const PRODUCTS = [
     name: "Mini Aspiradora para Teclado",
     shortDesc: "Elimina polvo, migas y suciedad de tu teclado en segundos. Recargable por USB-C.",
     desc: "Di adiós al polvo y las migas en tu teclado. La Mini Aspiradora USB tiene succión potente en un cuerpo compacto. Recargable por USB-C, silenciosa y con boquilla de precisión para llegar a cada tecla. Incluye cepillo lateral para limpiar pantallas y superficies delicadas.",
-    price: 29.99,
-    oldPrice: 49.99,
+    price: 26000,
+    oldPrice: 39000,
     image: "/products/vacuum/1.jpg",
     images: [
       "/products/vacuum/1.jpg",
@@ -81,8 +81,8 @@ export const PRODUCTS = [
     name: "Mini Selladora de Bolsas",
     shortDesc: "Mantén tus snacks frescos al instante. Funciona con cualquier bolsa plástica.",
     desc: "La Mini Selladora de Bolsas es el gadget más práctico para tu cocina y mochila. Con solo deslizarla sobre cualquier bolsa plástica, crea un sello hermético al instante. Sin electricidad — funciona con pilas AAA incluidas. Perfecta para snacks, cereales, café o cualquier alimento que quieras conservar fresco.",
-    price: 19.99,
-    oldPrice: 34.99,
+    price: 11000,
+    oldPrice: 16000,
     image: "/products/sealer/1.jpg",
     images: [
       "/products/sealer/1.jpg",
@@ -116,8 +116,8 @@ export const PRODUCTS = [
     name: "Luz LED con Sensor para Closet",
     shortDesc: "Se enciende sola al abrir tu armario. Sin instalación, sin cables.",
     desc: "Ilumina tu closet, cajones o armario sin ninguna instalación. La Luz LED con Sensor de Movimiento se activa automáticamente al detectar movimiento y se apaga sola después de 15 segundos. Adhesiva, recargable por USB-C y con 20 LEDs de luz cálida que iluminan hasta 2 metros cuadrados.",
-    price: 19.99,
-    oldPrice: 32.99,
+    price: 14000,
+    oldPrice: 21000,
     image: "/products/led/1.jpg",
     images: [
       "/products/led/1.jpg",
